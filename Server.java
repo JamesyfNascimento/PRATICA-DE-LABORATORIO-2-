@@ -101,16 +101,21 @@ public class Server implements Correio {
 
     @Override
     public boolean sendMensagem(Mensagem m, String senha, String userNameDestinatario) throws RemoteException {
-        String usuarioRemetente = m.getUserNameRemetente();
-        if (this.Usuarios.containsKey(usuarioRemetente)) {
-            Usuario remetente = this.Usuarios.get(usuarioRemetente);
-            if (remetente.getSenha().equals(senha)) {
-                Usuario destinatario = this.Usuarios.get(userNameDestinatario);
-                if (destinatario.addMensagens(m)) {
-                    return true;
+        try {
+            String usuarioRemetente = m.getUserNameRemetente();
+            if (this.Usuarios.containsKey(usuarioRemetente)) {
+                Usuario remetente = this.Usuarios.get(usuarioRemetente);
+                if (remetente.getSenha().equals(senha)) {
+                    Usuario destinatario = this.Usuarios.get(userNameDestinatario);
+                    if (destinatario.addMensagens(m)) {
+                        return true;
+                    }
                 }
             }
+        } catch (Exception e) {
+            System.out.println(e.toString());
         }
+
         return false;
     }
 }
